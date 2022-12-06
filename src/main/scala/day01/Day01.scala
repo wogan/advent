@@ -26,35 +26,25 @@ object Day01 extends Day(1) {
       |
       |10000""".stripMargin
 
-  def part1: IO[Unit] =
+  def totals: Stream[IO, Int] =
     input
       .map(_.toIntOption)
       .split(_.isEmpty)
       .map(_.toVector.combineAll)
       .unNone
-      .reduce(Math.max)
-      .debug()
-      .compile
-      .drain
 
-  val limit = 3
+  def part1: Stream[IO, Int] =
+    totals.reduce(Math.max)
 
-  def part2: IO[Unit] =
-    input
-      .map(_.toIntOption)
-      .split(_.isEmpty)
-      .map(_.toVector.combineAll)
-      .unNone
+  def part2: Stream[IO, Int] =
+    totals
       .fold(Heap.empty[Int]) { (heap, i) =>
-        heap.offer(i, limit)
+        heap.offer(i, 3)
       }
       .map(_.toList.combineAll)
-      .debug()
-      .compile
-      .drain
 
   override def run: IO[Unit] =
-    part2
+    part2.printLast
 }
 
 implicit class LimitHeap[A: Order](heap: Heap[A]) {
