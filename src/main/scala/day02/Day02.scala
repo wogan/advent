@@ -4,7 +4,6 @@ package day02
 import cats.effect.IO
 import cats.syntax.all.*
 import fs2.Stream
-import scodec.bits.Bases.Alphabets.Base32Crockford
 
 object Day02 extends Day(2) {
 
@@ -19,7 +18,7 @@ object Day02 extends Day(2) {
       case Loss => 0
       case Draw => 3
 
-    def forceResult(opponent: Choice) = this match
+    def forceResult(opponent: Choice): Choice = this match
       case Win => opponent.loses
       case Loss => opponent.beats
       case Draw => opponent
