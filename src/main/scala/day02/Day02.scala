@@ -2,7 +2,7 @@ package dev.wogan.advent
 package day02
 
 import cats.effect.IO
-import cats.syntax.*
+import cats.syntax.all.*
 import fs2.Stream
 import scodec.bits.Bases.Alphabets.Base32Crockford
 
