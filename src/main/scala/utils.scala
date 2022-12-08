@@ -12,10 +12,10 @@ def loadFile(filename: String): Stream[IO, String] =
 abstract class Day(number: Int) extends IOApp.Simple {
 
   def input: Stream[IO, String] =
-    loadFile(f"day$number%02d/input.txt")
+    loadFile(f"day$number%02d.txt")
 
   extension (input: String)
-    def lines: Stream[IO, String] =
+    def stream: Stream[IO, String] =
       Stream.emits[IO, String](input.split("\n"))
 
   extension[A: Show] (stream: Stream[IO, A])
