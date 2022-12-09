@@ -1,24 +1,32 @@
 package dev.wogan.advent
 
-import cats.Show
+import cats.{Order, Show}
+import cats.collections.Heap
 import cats.effect.{IO, IOApp}
 import cats.syntax.all.*
 import fs2.Stream
 import fs2.io.file.{Files, Path}
 
-def loadFile(filename: String): Stream[IO, String] =
+type Input = Stream[IO, String]
+type Output = Stream[IO, Int]
+
+def loadFile(filename: String): Input =
   Files[IO].readUtf8Lines(Path("src/main/resources").absolute / Path(filename))
 
-abstract class Day(number: Int) extends IOApp.Simple {
+extension (stream: Stream[IO, Int])
+  def max: Stream[IO, Int] =
+    stream.reduce(Math.max)
 
-  def input: Stream[IO, String] =
-    loadFile(f"day$number%02d.txt")
+  def sum: Stream[IO, Int] =
+    stream.reduce(_ + _)
 
-  extension (input: String)
-    def stream: Stream[IO, String] =
-      Stream.emits[IO, String](input.split("\n"))
-
-  extension[A: Show] (stream: Stream[IO, A])
-    def printLast: IO[Unit] =
-      stream.compile.lastOrError >>= IO.println
+implicit class LimitHeap[A: Order](heap: Heap[A]) {
+  def offer(a: A, limit: Int): Heap[A] = {
+    if heap.size < limit then
+      heap.add(a)
+    else if heap.getMin.exists(_ > a) then
+      heap
+    else
+      heap.add(a).remove
+  }
 }
