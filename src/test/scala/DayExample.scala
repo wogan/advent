@@ -12,20 +12,20 @@ abstract class DayExample extends CatsEffectSuite {
     def input: Stream[IO, String] =
       Stream.emits[IO, String](example.split("\n"))
 
-    def run(f: Input => Output): IO[Int] =
-      f(example.input).sum.compile.lastOrError
+    def run(f: Input => Output): IO[String] =
+      f(example.input).compile.lastOrError
 
   class DayTester(day: Day, example: String):
-    private def registerTest(f: Input => Output, part: Int, expected: Int): Unit =
+    private def registerTest(f: Input => Output, part: Int, expected: Any): Unit =
       test(s"Day ${day.number} part ${part}") {
-        assertIO(example.run(f), expected, s"Day ${day.number} part 1 did not match expected value")
+        assertIO(example.run(f), expected.toString, s"Day ${day.number} part 1 did not match expected value")
       }
 
-    def part1(expected: Int): DayTester =
+    def part1(expected: Any): DayTester =
       registerTest(day.part1, 1, expected)
       this
 
-    def part2(expected: Int): DayTester =
+    def part2(expected: Any): DayTester =
       registerTest(day.part2, 2, expected)
       this
 

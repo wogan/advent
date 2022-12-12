@@ -6,7 +6,7 @@ import cats.syntax.all.*
 import fs2.Stream
 
 object Day03 extends Day(3) {
-  
+
   extension (s: String)
     def cleave(): (String, String) =
       s.splitAt(s.length / 2)
@@ -16,7 +16,7 @@ object Day03 extends Day(3) {
       val (a, b) = s.cleave()
       val intersection = a.toSet.intersect(b.toSet)
       priority(intersection.head)
-    }.reduce(_ + _)
+    }.sum.asString
 
   def priority(char: Char): Int =
     if (char.isUpper)
@@ -27,6 +27,6 @@ object Day03 extends Day(3) {
     input.sliding(3, 3)
       .map(_.toVector.map(_.toSet).reduce(_.intersect(_)).head)
       .map(priority)
-      .reduce(_ + _)
+      .sum.asString
 
 }

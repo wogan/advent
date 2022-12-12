@@ -8,7 +8,7 @@ import fs2.Stream
 import fs2.io.file.{Files, Path}
 
 type Input = Stream[IO, String]
-type Output = Stream[IO, Int]
+type Output = Stream[IO, String]
 
 def loadFile(filename: String): Input =
   Files[IO].readUtf8Lines(Path("src/main/resources").absolute / Path(filename))
@@ -19,6 +19,9 @@ extension (stream: Stream[IO, Int])
 
   def sum: Stream[IO, Int] =
     stream.reduce(_ + _)
+
+  def asString: Stream[IO, String] =
+    stream.map(_.toString)
 
 implicit class LimitHeap[A: Order](heap: Heap[A]) {
   def offer(a: A, limit: Int): Heap[A] = {

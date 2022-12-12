@@ -10,7 +10,7 @@ import fs2.{Chunk, Pull, Stream}
 
 object Day01 extends Day(1) {
 
-  private def totals(input: Input): Output =
+  private def totals(input: Input): Stream[IO, Int] =
     input
       .map(_.toIntOption)
       .split(_.isEmpty)
@@ -18,7 +18,7 @@ object Day01 extends Day(1) {
       .unNone
 
   override def part1(input: Input): Output =
-    totals(input).reduce(Math.max)
+    totals(input).reduce(Math.max).sum.asString
 
   override def part2(input: Input): Output =
     totals(input)
@@ -26,4 +26,5 @@ object Day01 extends Day(1) {
         heap.offer(i, 3)
       }
       .map(_.toList.combineAll)
+      .sum.asString
 }
