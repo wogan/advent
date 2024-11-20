@@ -1,13 +1,10 @@
 package dev.wogan.advent
 package day05
 
-import cats.data.NonEmptyList
 import cats.effect.IO
 import cats.parse.{Numbers, Parser, Parser0}
-import fs2.{Pull, RaiseThrowable, Stream}
 import cats.syntax.all.*
-
-import scala.collection.immutable.SortedMap
+import fs2.{Pull, RaiseThrowable, Stream}
 
 type StackLine = List[(Char, Int)]
 type IdLine = List[(Int, Int)]

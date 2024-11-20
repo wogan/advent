@@ -1,12 +1,10 @@
 package dev.wogan.advent
 package day01
 
-import cats.{Order, Semigroup}
 import cats.collections.Heap
-import cats.effect.{ExitCode, IO, IOApp}
-import cats.kernel.Monoid
+import cats.effect.IO
 import cats.syntax.all.*
-import fs2.{Chunk, Pull, Stream}
+import fs2.Stream
 
 object Day01 extends Day(1) {
 

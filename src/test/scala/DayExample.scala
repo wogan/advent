@@ -1,7 +1,5 @@
 package dev.wogan.advent
 
-import day01.Day01
-
 import cats.effect.IO
 import fs2.Stream
 import munit.CatsEffectSuite

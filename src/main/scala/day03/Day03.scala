@@ -1,10 +1,6 @@
 package dev.wogan.advent
 package day03
 
-import cats.effect.IO
-import cats.syntax.all.*
-import fs2.Stream
-
 object Day03 extends Day(3) {
 
   extension (s: String)

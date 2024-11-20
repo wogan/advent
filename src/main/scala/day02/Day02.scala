@@ -1,10 +1,6 @@
 package dev.wogan.advent
 package day02
 
-import cats.effect.IO
-import cats.syntax.all.*
-import fs2.Stream
-
 object Day02 extends Day(2) {
 
   import Choice.*

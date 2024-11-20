@@ -1,8 +1,8 @@
 package dev.wogan.advent
 
-import cats.{Order, Show}
+import cats.Order
 import cats.collections.Heap
-import cats.effect.{IO, IOApp}
+import cats.effect.IO
 import cats.syntax.all.*
 import fs2.Stream
 import fs2.io.file.{Files, Path}

@@ -4,8 +4,6 @@ package day04
 import cats.effect.IO
 import cats.parse.{Numbers, Parser}
 
-import scala.util.matching.Regex
-
 object Day04 extends Day(4):
 
   val parser: Parser[(Assignment, Assignment)] = Parser.char(',').pair(Assignment.parser, Assignment.parser)
