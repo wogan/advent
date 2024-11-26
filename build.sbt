@@ -15,6 +15,6 @@ lazy val root = (project in file("."))
       "co.fs2" %% "fs2-core" % "3.11.0",
       "co.fs2" %% "fs2-io" % "3.11.0",
       "org.scalameta" %% "munit" % "1.0.2" % Test,
-      "org.typelevel" %% "munit-cats-effect-3" % "1.0.7" % Test,
+      "org.typelevel" %% "munit-cats-effect" % "2.0.0" % Test,
     )
   )
