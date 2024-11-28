@@ -13,6 +13,18 @@ type Output = Stream[IO, String]
 def loadFile(filename: String): Input =
   Files[IO].readUtf8Lines(Path("src/main/resources").absolute / Path(filename))
 
+extension (s: String)
+  def cleave(): (String, String) =
+    s.splitAt(s.length / 2)
+
+extension (r: Range)
+  def contains(other: Range): Boolean =
+    r.start <= other.start && r.end >= other.end
+
+  def overlaps(other: Range): Boolean =
+    (r.start >= other.start && r.start <= other.end)
+      || (r.end >= other.start && r.end <= other.end)
+
 extension (stream: Stream[IO, Int])
   def max: Stream[IO, Int] =
     stream.reduce(Math.max)

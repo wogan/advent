@@ -1,6 +1,5 @@
 package dev.wogan.advent
-
-import day01.Day01
+package year2022
 
 class Day01Example extends DayExample {
   /* --- Day 1: Calorie Counting ---

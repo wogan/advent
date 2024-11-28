@@ -1,5 +1,5 @@
 package dev.wogan.advent
-package day04
+package year2022
 
 import cats.effect.IO
 import cats.parse.{Numbers, Parser}
@@ -23,29 +23,21 @@ object Day04 extends Day(4):
       case _ => 0
     }.sum.asString
 
-case class AssignmentTwo(range: Range):
+private case class AssignmentTwo(range: Range):
   def contains(other: AssignmentTwo): Boolean =
     false
 
-extension (r: Range)
-  def contains(other: Range): Boolean =
-    r.start <= other.start && r.end >= other.end
 
-  def overlaps(other: Range): Boolean =
-    (r.start >= other.start && r.start <= other.end)
-    || (r.end >= other.start && r.end <= other.end)
-
-case class Assignment(start: Int, end: Int):
+private case class Assignment(start: Int, end: Int):
   def contains(other: Assignment): Boolean =
     this.start <= other.start && this.end >= other.end
 
   def overlaps(other: Assignment): Boolean =
     this.end >= other.start && other.end >= this.start
 
-object Assignment:
+private object Assignment:
   val parser: Parser[Assignment] = Parser.char('-').pair(Numbers.digits, Numbers.digits)
     .map(a => Assignment(a._1.toInt, a._2.toInt))
-
 
 extension (p: Parser[Any])
 

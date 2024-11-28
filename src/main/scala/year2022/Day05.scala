@@ -1,5 +1,5 @@
 package dev.wogan.advent
-package day05
+package year2022
 
 import cats.effect.IO
 import cats.parse.{Numbers, Parser, Parser0}

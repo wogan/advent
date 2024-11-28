@@ -1,6 +1,5 @@
 package dev.wogan.advent
-
-import day04.Day04
+package year2022
 
 class Day04Example extends DayExample {
   /* --- Day 4: Camp Cleanup ---

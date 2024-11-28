@@ -1,5 +1,5 @@
 package dev.wogan.advent
-package day01
+package year2022
 
 import cats.collections.Heap
 import cats.effect.IO

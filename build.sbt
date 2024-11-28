@@ -8,7 +8,7 @@ lazy val root = (project in file("."))
     idePackagePrefix := Some("dev.wogan.advent"),
     libraryDependencies := Seq(
       "org.typelevel" %% "cats-core" % "2.12.0",
-      "org.typelevel" %% "cats-effect" % "3.5.6",
+      "org.typelevel" %% "cats-effect" % "3.5.7",
       "org.typelevel" %% "cats-collections-core" % "0.9.9",
       "org.typelevel" %% "cats-time" % "0.5.1",
       "org.typelevel" %% "cats-parse" % "1.0.0",

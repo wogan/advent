@@ -1,11 +1,7 @@
 package dev.wogan.advent
-package day03
+package year2022
 
 object Day03 extends Day(3) {
-
-  extension (s: String)
-    def cleave(): (String, String) =
-      s.splitAt(s.length / 2)
 
   override def part1(input: Input): Output =
     input.map { s =>
