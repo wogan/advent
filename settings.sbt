@@ -1,6 +1,6 @@
 Global / excludeLintKeys ++= Set(idePackagePrefix, ideExcludedDirectories)
 
-Global / ideExcludedDirectories := Seq(file(".bsp"), file(".idea"), file("target"))
+Global / ideExcludedDirectories := Seq(file(".bsp"), file(".idea"))++ (baseDirectory.value ** "target").get
 
 initialize := {
   // Ensure previous initializations are run
