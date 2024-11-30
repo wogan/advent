@@ -1,4 +1,4 @@
-package dev.wogan.advent
+package dev.wogan.advent.scala
 
 import cats.effect.IO
 import fs2.Stream

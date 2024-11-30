@@ -1,9 +1,13 @@
-package dev.wogan.advent
+package dev.wogan.advent.scala
 
 import cats.Show
 import cats.effect.{IO, IOApp}
 import cats.syntax.all.*
 import fs2.Stream
+import fs2.io.file.{Files, Path}
+
+type Input = Stream[IO, String]
+type Output = Stream[IO, String]
 
 abstract class Day(val number: Int) extends IOApp.Simple {
 
@@ -24,3 +28,6 @@ abstract class Day(val number: Int) extends IOApp.Simple {
     }
 
 }
+
+def loadFile(filename: String): Input =
+  Files[IO].readUtf8Lines(Path("src/main/resources").absolute / Path(filename))

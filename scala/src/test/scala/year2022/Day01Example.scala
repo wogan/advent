@@ -1,4 +1,4 @@
-package dev.wogan.advent
+package dev.wogan.advent.scala
 package year2022
 
 class Day01Example extends DayExample {

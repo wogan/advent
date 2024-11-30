@@ -1,11 +1,14 @@
+import kotlin.Keys.*
+
 ThisBuild / version := "0.1.0-SNAPSHOT"
+ThisBuild / organization := "dev.wogan"
 
-ThisBuild / scalaVersion := "3.6.1"
-
-lazy val root = (project in file("."))
+lazy val adventScala = (project in file("scala"))
   .settings(
-    name := "advent2022",
-    idePackagePrefix := Some("dev.wogan.advent"),
+    name := "advent-scala",
+    scalaVersion := "3.6.1",
+    scalacOptions += "-target:21",
+    idePackagePrefix := Some("dev.wogan.advent.scala"),
     libraryDependencies := Seq(
       "org.typelevel" %% "cats-core" % "2.12.0",
       "org.typelevel" %% "cats-effect" % "3.5.7",
@@ -17,4 +20,28 @@ lazy val root = (project in file("."))
       "org.scalameta" %% "munit" % "1.0.2" % Test,
       "org.typelevel" %% "munit-cats-effect" % "2.0.0" % Test,
     )
+  )
+
+lazy val adventKotlin = (project in file("kotlin"))
+  .enablePlugins(KotlinPlugin)
+  .settings(
+    name := "advent-kotlin",
+    kotlinVersion := "2.1.0",
+    kotlincJvmTarget := "21",
+    autoScalaLibrary := false,
+    idePackagePrefix := Some("dev.wogan.advent.kotlin"),
+    kotlinLib("stdlib"),
+    libraryDependencies := Seq(
+      "org.jetbrains.kotlinx" % "kotlinx-coroutines-core" % "1.9.0",
+    )
+  )
+
+lazy val adventJava = (project in file("java"))
+  .settings(
+    name := "advent-java",
+    autoScalaLibrary := false,
+    javacOptions ++= Seq("-source", "21", "-target", "21"),
+    idePackagePrefix := Some("dev.wogan.advent.java"),
+    Compile / unmanagedSourceDirectories := (Compile / javaSource).value :: Nil,
+    Test / unmanagedSourceDirectories := (Test / javaSource).value :: Nil,
   )

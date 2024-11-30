@@ -1,17 +1,10 @@
-package dev.wogan.advent
+package dev.wogan.advent.scala
 
 import cats.Order
 import cats.collections.Heap
 import cats.effect.IO
 import cats.syntax.all.*
 import fs2.Stream
-import fs2.io.file.{Files, Path}
-
-type Input = Stream[IO, String]
-type Output = Stream[IO, String]
-
-def loadFile(filename: String): Input =
-  Files[IO].readUtf8Lines(Path("src/main/resources").absolute / Path(filename))
 
 extension (s: String)
   def cleave(): (String, String) =

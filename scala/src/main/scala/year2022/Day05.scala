@@ -1,4 +1,4 @@
-package dev.wogan.advent
+package dev.wogan.advent.scala
 package year2022
 
 import cats.effect.IO
@@ -53,7 +53,7 @@ object Day05 extends Day(5) {
   def mkStacks(lines: IdLine, stacks: StackLine): Stacks = ???
 }
 
-case class Stacks(map: Map[Int, Stack], order: List[Int]):
+private case class Stacks(map: Map[Int, Stack], order: List[Int]):
   def bottom: String = order.map(map).map(_.bottom).mkString
 
   def execute(move: Move): Stacks =
@@ -61,7 +61,7 @@ case class Stacks(map: Map[Int, Stack], order: List[Int]):
     val added = map(move.to).addAllToTop(items.reverse)
     Stacks(map.updated(move.from, removed).updated(move.to, added), order)
 
-case class Stack(items: List[Char]):
+private case class Stack(items: List[Char]):
   def addAllToTop(list: List[Char]): Stack =
     Stack(list ::: items)
 
@@ -81,8 +81,7 @@ case class Stack(items: List[Char]):
     val (a, b) = items.splitAt(n)
     (a, Stack(b))
 
-case class Move(qty: Int, from: Int, to: Int)
-
+private case class Move(qty: Int, from: Int, to: Int)
 
 extension[A] (p: Parser0[A])
   def parseAllIO(string: String): IO[A] =
@@ -98,10 +97,3 @@ extension[F[_] : RaiseThrowable, A] (stream: Stream[F, A])
           case Right(r) => Pull.pure(r -> tl)
         }
     }
-
-
-/*
- Do while parseEither is left, build NonEmptyList[(Option[Char], Int)] (append each new line)
-
-
-*/

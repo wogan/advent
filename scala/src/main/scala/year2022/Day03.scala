@@ -1,4 +1,4 @@
-package dev.wogan.advent
+package dev.wogan.advent.scala
 package year2022
 
 object Day03 extends Day(3) {
