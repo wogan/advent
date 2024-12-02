@@ -33,7 +33,9 @@ lazy val adventKotlin = (project in file("kotlin"))
     kotlinLib("stdlib"),
     libraryDependencies := Seq(
       "org.jetbrains.kotlinx" % "kotlinx-coroutines-core" % "1.9.0",
-    )
+    ),
+    Compile / unmanagedSourceDirectories := (Compile / kotlinSource).value :: Nil,
+    Test / unmanagedSourceDirectories := (Test / kotlinSource).value :: Nil,
   )
 
 lazy val adventJava = (project in file("java"))

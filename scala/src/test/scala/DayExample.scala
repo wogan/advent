@@ -15,7 +15,7 @@ abstract class DayExample extends CatsEffectSuite {
 
   class DayTester(day: Day, example: String):
     private def registerTest(f: Input => Output, part: Int, expected: Any): Unit =
-      test(s"Day ${day.number} part $part") {
+      test(s"Year ${day.year} Day ${day.number} part $part") {
         assertIO(example.run(f), expected.toString, s"Day ${day.number} part $part did not match expected value")
       }
 

@@ -9,25 +9,28 @@ import fs2.io.file.{Files, Path}
 type Input = Stream[IO, String]
 type Output = Stream[IO, String]
 
-abstract class Day(val number: Int) extends IOApp.Simple {
+abstract class Day(val number: Int)(using val year: Year) extends IOApp.Simple {
 
-  def part1(input: Input = input): Output = Stream("???")
+  def part1(input: Input): Output = Stream("?")
 
-  def part2(input: Input = input): Output = Stream("???")
-
-  def input: Input =
-    loadFile(f"day$number%02d.txt")
+  def part2(input: Input): Output = Stream("?")
 
   override def run: IO[Unit] =
-    val x = for {
-      p1 <- part1()
-      p2 <- part2()
-    } yield p1 -> p2
-    x.compile.lastOrError >>= { case (p1, p2) =>
+    val input = loadFile(f"/${year.value}%d/day$number%02d.txt")
+    val program = for
+      p1 <- part1(input)
+      p2 <- part2(input)
+    yield p1 -> p2
+    program.compile.lastOrError >>= { case (p1, p2) =>
       IO.println(s"Part One: $p1") *> IO.println(s"Part Two: $p2")
     }
 
 }
 
 def loadFile(filename: String): Input =
-  Files[IO].readUtf8Lines(Path("src/main/resources").absolute / Path(filename))
+  resource(filename) >>= Files[IO].readUtf8Lines
+
+def resource(name: String): Stream[IO, Path] =
+  Stream.fromOption[IO](
+    Option(classOf[Day].getResource(name)).map(uri => Path(uri.getPath))
+  )

@@ -25,16 +25,14 @@ extension (stream: Stream[IO, Int])
   def sum: Stream[IO, Int] =
     stream.reduce(_ + _)
 
-  def asString: Stream[IO, String] =
-    stream.map(_.toString)
+given Conversion[Stream[IO, Int], Stream[IO, String]] =
+  _.map(_.toString)
 
-implicit class LimitHeap[A: Order](heap: Heap[A]) {
-  def offer(a: A, limit: Int): Heap[A] = {
+extension [A: Order](heap: Heap[A])
+  def offer(a: A, limit: Int): Heap[A] =
     if heap.size < limit then
       heap.add(a)
     else if heap.getMin.exists(_ > a) then
       heap
     else
       heap.add(a).remove
-  }
-}

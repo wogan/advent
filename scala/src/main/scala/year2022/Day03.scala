@@ -8,7 +8,7 @@ object Day03 extends Day(3) {
       val (a, b) = s.cleave()
       val intersection = a.toSet.intersect(b.toSet)
       priority(intersection.head)
-    }.sum.asString
+    }.sum
 
   def priority(char: Char): Int =
     if (char.isUpper)
@@ -19,6 +19,6 @@ object Day03 extends Day(3) {
     input.sliding(3, 3)
       .map(_.toVector.map(_.toSet).reduce(_.intersect(_)).head)
       .map(priority)
-      .sum.asString
+      .sum
 
 }

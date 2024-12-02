@@ -16,7 +16,7 @@ object Day01 extends Day(1) {
       .unNone
 
   override def part1(input: Input): Output =
-    totals(input).reduce(Math.max).sum.asString
+    totals(input).reduce(Math.max).sum
 
   override def part2(input: Input): Output =
     totals(input)
@@ -24,5 +24,5 @@ object Day01 extends Day(1) {
         heap.offer(i, 3)
       }
       .map(_.toList.combineAll)
-      .sum.asString
+      .sum
 }

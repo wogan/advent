@@ -25,7 +25,7 @@ object Day02 extends Day(2) {
   )
 
   override def part1(input: Input): Output =
-    input.map(s => score(choice(s.head), choice(s.last))).sum.asString
+    input.map(s => score(choice(s.head), choice(s.last))).sum
 
   override def part2(input: Input): Output =
     input.map(s => {
@@ -33,7 +33,7 @@ object Day02 extends Day(2) {
       val desired = result(s.last)
       val pick = desired.forceResult(opponent)
       score(opponent, pick)
-    }).sum.asString
+    }).sum
 
 }
 
