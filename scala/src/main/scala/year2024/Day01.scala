@@ -2,18 +2,15 @@ package dev.wogan.advent.scala
 package year2024
 
 import cats.effect.IO
-import cats.parse.{Numbers, Parser}
-import fs2.Stream
 import cats.syntax.all.*
+import fs2.Stream
 
 object Day01 extends Day(1) {
 
-  val parser = Numbers.digits.map(_.toInt) ~ (Parser.char(' ').rep *> Numbers.digits.map(_.toInt))
+  val parser = Parsers.int ~ (Parsers.whitespace *> Parsers.int)
 
   def separate(input: Input): (Stream[IO, Int], Stream[IO, Int]) =
-    input.flatMap { string =>
-      parser.parseAllStream(string)
-    }.unzip
+    input.flatMap(parser.parseAllStream).unzip
 
   override def part1(input: Input): Output =
     val (a, b) = separate(input)

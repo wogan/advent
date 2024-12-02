@@ -2,7 +2,7 @@ package dev.wogan.advent.scala
 
 import cats.Show
 import cats.effect.IO
-import cats.parse.{Parser, Parser0}
+import cats.parse.{Numbers, Parser, Parser0}
 import cats.syntax.all.*
 import fs2.Stream
 
@@ -13,6 +13,11 @@ import fs2.Stream
    between      - identical to border1 *> parsingResult <* border2;
    |, orElse    - Parser will be successful if any of sides is successful.
 */
+
+object Parsers {
+  val int: Parser[Int] = Numbers.digits.map(_.toInt)
+  val whitespace: Parser[Unit] = Parser.char(' ').rep.void
+}
 
 extension (p: Parser[Any])
 

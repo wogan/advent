@@ -29,7 +29,7 @@ lazy val adventKotlin = (project in file("kotlin"))
     kotlinVersion := "2.1.0",
     kotlincJvmTarget := "21",
     autoScalaLibrary := false,
-    idePackagePrefix := Some("dev.wogan.advent.kotlin"),
+//    idePackagePrefix := Some("dev.wogan.advent.kotlin"),
     kotlinLib("stdlib"),
     libraryDependencies := Seq(
       "org.jetbrains.kotlinx" % "kotlinx-coroutines-core" % "1.9.0",

@@ -16,7 +16,7 @@ abstract class Day(val number: Int)(using val year: Year) extends IOApp.Simple {
   def part2(input: Input): Output = Stream("?")
 
   override def run: IO[Unit] =
-    val input = loadFile(f"/${year.value}%d/day$number%02d.txt")
+    val input = loadFile(f"input/${year.value}%d/day$number%02d.txt")
     val program = for
       p1 <- part1(input)
       p2 <- part2(input)
@@ -28,9 +28,4 @@ abstract class Day(val number: Int)(using val year: Year) extends IOApp.Simple {
 }
 
 def loadFile(filename: String): Input =
-  resource(filename) >>= Files[IO].readUtf8Lines
-
-def resource(name: String): Stream[IO, Path] =
-  Stream.fromOption[IO](
-    Option(classOf[Day].getResource(name)).map(uri => Path(uri.getPath))
-  )
+  Files[IO].readUtf8Lines(Path(filename))

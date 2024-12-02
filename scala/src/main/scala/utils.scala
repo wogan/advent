@@ -25,7 +25,10 @@ extension (stream: Stream[IO, Int])
   def sum: Stream[IO, Int] =
     stream.reduce(_ + _)
 
-given Conversion[Stream[IO, Int], Stream[IO, String]] =
+given streamIntToString: Conversion[Stream[IO, Int], Stream[IO, String]] =
+  _.map(_.toString)
+
+given streamLongToString: Conversion[Stream[IO, Long], Stream[IO, String]] =
   _.map(_.toString)
 
 extension [A: Order](heap: Heap[A])
