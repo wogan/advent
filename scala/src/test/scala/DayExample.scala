@@ -27,6 +27,9 @@ abstract class DayExample extends CatsEffectSuite {
       registerTest(day.part2, 2, expected)
       this
 
+    def example(example: String): DayTester =
+      DayTester(day, example)
+
   extension (day: Day)
     def example(example: String): DayTester =
       DayTester(day, example)

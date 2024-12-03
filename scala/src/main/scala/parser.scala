@@ -17,6 +17,12 @@ import fs2.Stream
 object Parsers {
   val int: Parser[Int] = Numbers.digits.map(_.toInt)
   val whitespace: Parser[Unit] = Parser.char(' ').rep.void
+
+  def find[A](parser: Parser[A]): Parser[A] =
+    Parser.anyChar.repUntil0(Parser.peek(parser)).with1 *> parser
+
+  def findAll[A](parser: Parser[A]): Parser[List[A]] =
+    Parser.repUntil(find(parser), (Parser.not(parser).with1 *> Parser.anyChar).rep0 *> Parser.end).map(_.toList) <* Parser.anyChar.rep0 <* Parser.end
 }
 
 extension (p: Parser[Any])
