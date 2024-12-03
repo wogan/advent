@@ -28,4 +28,4 @@ abstract class Day(val number: Int)(using val year: Year) extends IOApp.Simple {
 }
 
 def loadFile(filename: String): Input =
-  Files[IO].readUtf8Lines(Path(filename))
+  Files[IO].readUtf8Lines(Path(filename)).dropLastIf(_ == "")

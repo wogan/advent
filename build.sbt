@@ -7,7 +7,7 @@ lazy val adventScala = (project in file("scala"))
   .settings(
     name := "advent-scala",
     scalaVersion := "3.6.1",
-    scalacOptions += "-target:21",
+    scalacOptions ++= Seq("-target:21", "-Ykind-projector"),
     idePackagePrefix := Some("dev.wogan.advent.scala"),
     libraryDependencies := Seq(
       "org.typelevel" %% "cats-core" % "2.12.0",
@@ -29,10 +29,11 @@ lazy val adventKotlin = (project in file("kotlin"))
     kotlinVersion := "2.1.0",
     kotlincJvmTarget := "21",
     autoScalaLibrary := false,
-//    idePackagePrefix := Some("dev.wogan.advent.kotlin"),
     kotlinLib("stdlib"),
     libraryDependencies := Seq(
       "org.jetbrains.kotlinx" % "kotlinx-coroutines-core" % "1.9.0",
+      "io.arrow-kt" % "arrow-core" % "1.2.4",
+      "io.arrow-kt" % "arrow-fx-coroutines" % "1.2.4"
     ),
     Compile / unmanagedSourceDirectories := (Compile / kotlinSource).value :: Nil,
     Test / unmanagedSourceDirectories := (Test / kotlinSource).value :: Nil,

@@ -6,6 +6,7 @@ import cats.effect.IO
 import cats.parse.Parser.{anyChar, char}
 import cats.parse.{Numbers, Parser, Parser0}
 import cats.syntax.all.*
+import dev.wogan.advent.scala.Parsers.whitespace
 import fs2.{Pull, RaiseThrowable, Stream}
 
 private type StackId = Int
@@ -19,13 +20,12 @@ object Day05 extends Day(5) {
   val stackItem: Parser[Option[Char]] = anyChar.between(char('['), char(']'))
     .map(Option.apply).backtrack
     .orElse(Parser.string("   ").map(_ => Option.empty[Char]))
-    .withContext("stackItem")
 
   val parseLine: Parser[StackLine] = stackItem.repSep(` `).map(_.zipWithIndex).map(_.collect {
     case (Some(c), i) => c -> i
-  }).withContext("parseLine")
+  })
 
-  val parseIdsLine: Parser[IdLine] = Numbers.digit.between(` `, ` `).map(_.toInt).repSep(` `).map(_.zipWithIndex)
+  val parseIdsLine: Parser[IdLine] = whitespace *> Parsers.int.repSep(whitespace).map(_.zipWithIndex) <* ` `.rep0
 
   val parserEither: Parser0[Either[StackLine, IdLine]] = parseIdsLine.backtrack.eitherOr(parseLine)
 
@@ -35,13 +35,7 @@ object Day05 extends Day(5) {
     }
 
   override def part1(input: Input): Output =
-    import cats.effect.unsafe.implicits.global
-    // Print the input?
-    input.debug().evalMap(s => parserEither.parseAllIO(s)).debug().compile.drain.unsafeRunSync()
-
-    // Do the actual work
     val pull = input.foldWhile[List[StackLine], Stacks](List()) { (s, x) =>
-      println(show"Parsing line \"$x\", current state: $s")
       parserEither.parseAllIO(x).map {
         case Left(stackLine) => (s :+ stackLine).asLeft
         case Right(ids) => mkStacks(ids, s).asRight
@@ -50,34 +44,30 @@ object Day05 extends Day(5) {
     pull.flatMap(r => Pull.output1(r)).stream.flatMap {
       case (state, stream) =>
         stream
-          .drop(1)
+          .dropWhile(_.isEmpty) // blank line
           .evalMap(parseCommand.parseAllIO)
           .fold(state)(_.execute(_))
     }.map(_.bottom)
 
-  def mkStacks(lines: IdLine, stacks: List[StackLine]): Stacks = ???
+  def mkStacks(lines: IdLine, stacks: List[StackLine]): Stacks =
+    val idMap = lines.groupMap(_._2)(_._1).view.mapValues(_.head)
+    val order = idMap.values.toList
+    val stackMap = stacks.flatten.groupMap(_._2)(_._1)
+      .map { case (k, v) => idMap(k) -> Stack(v) }
+    Stacks(stackMap, order)
 }
 
-private case class Stacks(map: Map[StackId, Stack], order: List[Int]):
-  def bottom: String = order.map(map).map(_.bottom).mkString
+private case class Stacks(map: Map[StackId, Stack], order: List[StackId]):
+  def bottom: String = order.map(map).map(_.top).mkString
 
   def execute(move: Move): Stacks =
-    val (items, removed) = map(move.from).pop(move.qty)
+    val (items, remainder) = map(move.from).pop(move.qty)
     val added = map(move.to).addAllToTop(items.reverse)
-    Stacks(map.updated(move.from, removed).updated(move.to, added), order)
+    Stacks(map.updated(move.from, remainder).updated(move.to, added), order)
 
 private case class Stack(items: List[Char]): // start of list = top of stack
   def addAllToTop(list: List[Char]): Stack =
     Stack(list ::: items)
-
-  def addToTop(item: Char): Stack =
-    Stack(item :: items)
-
-  def addToBottom(item: Char): Stack =
-    Stack(items :+ item)
-
-  def bottom: Char =
-    items.last
 
   def top: Char =
     items.head

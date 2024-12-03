@@ -36,7 +36,7 @@ extension (p: Parser[Any])
 extension[A] (p: Parser0[A])
 
   def parseAllRaise(string: String): Either[IllegalArgumentException, A] =
-    p.parseAll(string).left.map((e: Parser.Error) => IllegalArgumentException(show"Parsing error: $e"))
+    p.parseAll(string).left.map((e: Parser.Error) => IllegalArgumentException(show"Parsing error:\n$e"))
 
   def parseAllIO(string: String): IO[A] =
     IO.fromEither(p.parseAllRaise(string))

@@ -2,7 +2,6 @@ package dev.wogan.advent.scala
 package year2024
 
 import cats.effect.IO
-import cats.syntax.all.*
 import fs2.Stream
 
 object Day01 extends Day(1) {
