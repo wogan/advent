@@ -25,11 +25,20 @@ extension (stream: Stream[IO, Int])
   def sum: Stream[IO, Int] =
     stream.reduce(_ + _)
 
-given streamIntToString: Conversion[Stream[IO, Int], Stream[IO, String]] =
+given streamIntToString: Conversion[Stream[IO, Int], Output] =
   _.map(_.toString)
 
-given streamLongToString: Conversion[Stream[IO, Long], Stream[IO, String]] =
+given streamLongToString: Conversion[Stream[IO, Long], Output] =
   _.map(_.toString)
+
+given ioStringToStream: Conversion[IO[String], Output] =
+  Stream.eval(_)
+
+given ioLongToStream: Conversion[IO[Long], Output] =
+  Stream.eval(_).map(_.toString)
+
+given ioIntToStream: Conversion[IO[Int], Output] =
+  Stream.eval(_).map(_.toString)
 
 extension [A: Order](heap: Heap[A])
   def offer(a: A, limit: Int): Heap[A] =

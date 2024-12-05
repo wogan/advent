@@ -7,7 +7,7 @@ lazy val adventScala = (project in file("scala"))
   .settings(
     name := "advent-scala",
     scalaVersion := "3.6.1",
-    scalacOptions ++= Seq("-target:21", "-Ykind-projector"),
+    scalacOptions ++= Seq("-Xtarget:21", "-Xkind-projector"),
     idePackagePrefix := Some("dev.wogan.advent.scala"),
     libraryDependencies := Seq(
       "org.typelevel" %% "cats-core" % "2.12.0",
@@ -17,7 +17,7 @@ lazy val adventScala = (project in file("scala"))
       "org.typelevel" %% "cats-parse" % "1.0.0",
       "co.fs2" %% "fs2-core" % "3.11.0",
       "co.fs2" %% "fs2-io" % "3.11.0",
-      "org.scalameta" %% "munit" % "1.0.2" % Test,
+      "org.scalameta" %% "munit" % "1.0.3" % Test,
       "org.typelevel" %% "munit-cats-effect" % "2.0.0" % Test,
     )
   )

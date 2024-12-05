@@ -42,20 +42,16 @@ object Day02 extends Day(2) {
     }).toList.exists(identity)
 
   override def part1(input: Input): Output =
-    Stream.eval[IO, Long](
-      input
-        .map(toReport)
-        .filter(isSafe)
-        .compile
-        .count
-    )
+    input
+      .map(toReport)
+      .filter(isSafe)
+      .compile
+      .count
 
   override def part2(input: Input): Output =
-    Stream.eval[IO, Long](
-      input
-        .map(toReport)
-        .filter(isSafeWithDampener)
-        .compile
-        .count
-    )
+    input
+      .map(toReport)
+      .filter(isSafeWithDampener)
+      .compile
+      .count
 }
