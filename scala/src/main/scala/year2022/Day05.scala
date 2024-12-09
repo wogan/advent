@@ -1,12 +1,13 @@
 package dev.wogan.advent.scala
 package year2022
 
+import Parsers.whitespace
+
 import cats.data.NonEmptyList
 import cats.effect.IO
 import cats.parse.Parser.{anyChar, char}
 import cats.parse.{Numbers, Parser, Parser0}
 import cats.syntax.all.*
-import dev.wogan.advent.scala.Parsers.whitespace
 import fs2.{Pull, RaiseThrowable, Stream}
 
 private type StackId = Int
@@ -35,13 +36,12 @@ object Day05 extends Day(5) {
     }
 
   override def part1(input: Input): Output =
-    val pull = input.foldWhile[List[StackLine], Stacks](List()) { (s, x) =>
+    input.foldWhile[List[StackLine], Stacks](List()) { (s, x) =>
       parserEither.parseAllIO(x).map {
         case Left(stackLine) => (s :+ stackLine).asLeft
         case Right(ids) => mkStacks(ids, s).asRight
       }
-    }
-    pull.flatMap(r => Pull.output1(r)).stream.flatMap {
+    }.flatMap {
       case (state, stream) =>
         stream
           .dropWhile(_.isEmpty) // blank line
@@ -77,15 +77,3 @@ private case class Stack(items: List[Char]): // start of list = top of stack
     (a, Stack(b))
 
 private case class Move(qty: Int, from: StackId, to: StackId)
-
-
-extension[F[_] : RaiseThrowable, A] (stream: Stream[F, A])
-  def foldWhile[S, R](s: S)(f: (S, A) => F[Either[S, R]]): Pull[F, Nothing, (R, Stream[F, A])] =
-    stream.pull.uncons1.flatMap {
-      case None => Pull.raiseError(new IllegalStateException)
-      case Some((hd, tl)) =>
-        Pull.eval(f(s, hd)).flatMap {
-          case Left(s1) => tl.foldWhile(s1)(f)
-          case Right(r) => Pull.pure(r -> tl)
-        }
-    }

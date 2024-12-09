@@ -1,10 +1,12 @@
 package dev.wogan.advent.scala
 
 import cats.Show
-import cats.effect.IO
+import cats.effect.{IO, ParallelF, Ref}
 import cats.parse.{Numbers, Parser, Parser0}
 import cats.syntax.all.*
-import fs2.Stream
+import fs2.{Pipe, Pull, Stream}
+
+import scala.annotation.tailrec
 
 /* Parsers may be combined through operators:
    ~            - product. Allows continuing parsing if the left side was successful;
@@ -49,3 +51,14 @@ extension[A] (p: Parser0[A])
 
   def parseAllStream(string: String): Stream[IO, A] =
     Stream.fromEither(parseAllRaise(string))
+
+extension (stream: Stream[IO, String])
+  def parseUntil[P](parser: Parser[P], end: Parser0[Any] = Parser.end): Stream[IO, (List[P], Stream[IO, String])] =
+    stream.foldWhile(List.empty[P]) { (s, a) =>
+      IO.pure(end.parseAll(a).as(s)).flatMap {
+        case Left(_) =>
+          parser.parseAllIO(a).map(s.appended).map(Left(_))
+        case Right(_) =>
+          IO.pure(Right(s))
+      }
+    }
