@@ -18,6 +18,7 @@ import scala.annotation.tailrec
 
 object Parsers {
   val int: Parser[Int] = Numbers.digits.map(_.toInt)
+  val long: Parser[Long] = Numbers.digits.map(_.toLong)
   val whitespace: Parser[Unit] = Parser.char(' ').rep.void
 
   def find[A](parser: Parser[A]): Parser[A] =

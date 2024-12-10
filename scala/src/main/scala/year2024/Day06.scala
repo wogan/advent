@@ -108,5 +108,11 @@ object Day06 extends Day(6) {
       val cycles = findCycles(map, guard)
       cycles.size
     }
+    
+  /* possible optimisations for part 2 from work slack thread:
+    - you don't need steps walked, you just need what obstacle you hit from what direction
+    - don't start each walk from the beginning; start on the path point right before the path point
+      where we’re placing the obstacle. 
+   */
 
 }
