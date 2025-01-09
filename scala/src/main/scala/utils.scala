@@ -6,6 +6,10 @@ import cats.effect.IO
 import cats.syntax.all.*
 import fs2.Stream
 
+extension [A](a: A)
+  def repeatWhile(f: A => A, p: A => Boolean): List[A] =
+    Stream.iterate(a)(f).takeWhile(p).compile.toList
+
 extension (s: String)
   def cleave(): (String, String) =
     s.splitAt(s.length / 2)

@@ -4,7 +4,21 @@ package year2024
 object Day08 extends Day(8) {
 
   case class InputMap(size: Point, antennas: Map[Char, Set[Point]]):
-    def isValid(p: Point): Boolean = p.x >= 0 && p.y >= 0 && p.x < size.x && p.y < size.y
+    def isValid(p: Point): Boolean =
+      p.x >= 0 && p.y >= 0 && p.x < size.x && p.y < size.y
+
+    def resonantAntinodes: Set[Point] =
+      val x1 = for
+        nodes <- antennas.values
+        (a, b) <- nodes.toSeq.pairCombinations
+        if a != b
+        x <- resonantAntinodes(a, b)
+      yield x
+      x1.toSet
+
+    private def resonantAntinodes(p: Point, o: Point): Seq[Point] =
+      val (dx, dy) = p - o
+      p.repeatWhile(_ + (dx, dy), isValid) ++ o.repeatWhile(_ - (dx, dy), isValid)
 
   extension (p: Point)
     def antinodes(o: Point): Seq[Point] =
@@ -43,5 +57,11 @@ object Day08 extends Day(8) {
       antinodes.toSet.size.toString
     }
 
+  override def part2(input: Input): Output =
+    input.compile.toList.map { lines =>
+      val map = buildMap(lines)
+      val antinodes = map.resonantAntinodes
+      antinodes.size.toString
+    }
 }
 
