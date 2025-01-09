@@ -18,6 +18,10 @@ extension (r: Range)
     (r.start >= other.start && r.start <= other.end)
       || (r.end >= other.start && r.end <= other.end)
 
+extension [A](s: Seq[A])
+  def pairCombinations: Iterator[(A, A)] =
+    s.combinations(2).map(s => (s.head, s.last))
+
 extension (stream: Stream[IO, Int])
   def max: Stream[IO, Int] =
     stream.reduce(Math.max)

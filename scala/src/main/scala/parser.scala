@@ -1,12 +1,10 @@
 package dev.wogan.advent.scala
 
 import cats.Show
-import cats.effect.{IO, ParallelF, Ref}
+import cats.effect.IO
 import cats.parse.{Numbers, Parser, Parser0}
 import cats.syntax.all.*
-import fs2.{Pipe, Pull, Stream}
-
-import scala.annotation.tailrec
+import fs2.Stream
 
 /* Parsers may be combined through operators:
    ~            - product. Allows continuing parsing if the left side was successful;

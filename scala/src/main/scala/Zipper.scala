@@ -27,7 +27,7 @@ case class Zipper[A](left: List[A], focus: A, right: List[A]) {
     }.orElse(left.headOption.map { nextFocus =>
       Zipper(left.tail, nextFocus, right)
     })
-  
+
   def duplicate: Zipper[Zipper[A]] =
     Zipper(duplicateLeft(identity), this, duplicateRight(identity))
 
