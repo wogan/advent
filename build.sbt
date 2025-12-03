@@ -7,7 +7,7 @@ lazy val adventScala = (project in file("scala"))
   .settings(
     name := "advent-scala",
     scalaVersion := "3.7.4",
-    scalacOptions ++= Seq("-Xtarget:21", "-Xkind-projector"), // intellij wants the -Y version
+    scalacOptions ++= Seq("-Xtarget:21", "-Xkind-projector", "-deprecation", "-feature"), // intellij wants the -Y version
     idePackagePrefix := Some("dev.wogan.advent.scala"),
     libraryDependencies := Seq(
       "org.typelevel" %% "cats-core" % "2.13.0",

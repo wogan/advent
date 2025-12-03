@@ -4,6 +4,7 @@ package year2025
 import cats.effect.IO
 import cats.parse.Parser
 import fs2.Stream
+import scala.language.implicitConversions
 
 object Day01 extends Day(1) {
   final val SIZE = 100
@@ -21,10 +22,10 @@ object Day01 extends Day(1) {
 
     // Count the clicks every time we hit/pass 0
     def moveWithCount(instruction: Instruction): (Spinner, Int) =
-      val rawNext = value + instruction.delta
-      val remainderHitsZero = rawNext >= SIZE || (value > 0 && rawNext <= 0)
+      val next = value + instruction.delta
+      val remainderHitsZero = next >= SIZE || (value > 0 && next <= 0)
       val clicks = instruction.amount / SIZE + (if remainderHitsZero then 1 else 0)
-      (copy(value = Math.floorMod(rawNext, SIZE)), clicks)
+      (copy(value = Math.floorMod(next, SIZE)), clicks)
 
   val parseDirection = Parser.charIn('L', 'R').asInstanceOf[Parser['L' | 'R']]
   val parser = (parseDirection ~ Parsers.int).map {
