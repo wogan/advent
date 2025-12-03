@@ -6,20 +6,23 @@ ThisBuild / organization := "dev.wogan"
 lazy val adventScala = (project in file("scala"))
   .settings(
     name := "advent-scala",
-    scalaVersion := "3.6.2",
+    scalaVersion := "3.7.4",
     scalacOptions ++= Seq("-Xtarget:21", "-Xkind-projector"), // intellij wants the -Y version
     idePackagePrefix := Some("dev.wogan.advent.scala"),
     libraryDependencies := Seq(
-      "org.typelevel" %% "cats-core" % "2.12.0",
-      "org.typelevel" %% "cats-effect" % "3.5.7",
-      "org.typelevel" %% "cats-collections-core" % "0.9.9",
-      "org.typelevel" %% "cats-time" % "0.5.1",
-      "org.typelevel" %% "cats-parse" % "1.0.0",
-      "co.fs2" %% "fs2-core" % "3.11.0",
-      "co.fs2" %% "fs2-io" % "3.11.0",
-      "org.scalameta" %% "munit" % "1.0.3" % Test,
-      "org.typelevel" %% "munit-cats-effect" % "2.0.0" % Test,
-    )
+      "org.typelevel" %% "cats-core" % "2.13.0",
+      "org.typelevel" %% "cats-effect" % "3.6.3",
+      "org.typelevel" %% "cats-collections-core" % "0.9.10",
+      "org.typelevel" %% "cats-time" % "0.6.0",
+      "org.typelevel" %% "cats-parse" % "1.1.0",
+      "co.fs2" %% "fs2-core" % "3.12.2",
+      "co.fs2" %% "fs2-io" % "3.12.2",
+      "org.scalameta" %% "munit" % "1.2.1" % Test,
+      "org.typelevel" %% "munit-cats-effect" % "2.1.0" % Test,
+      
+    ),
+    dependencyOverrides += "org.scala-lang" %% "scala3-library" % scalaVersion.value,
+      dependencyOverrides += "org.scala-lang" %% "scala3-compiler" % scalaVersion.value
   )
 
 lazy val adventKotlin = (project in file("kotlin"))
@@ -32,9 +35,9 @@ lazy val adventKotlin = (project in file("kotlin"))
     kotlinLib("stdlib"),
     kotlinRuntimeProvided := false,
     libraryDependencies := Seq(
-      "org.jetbrains.kotlinx" % "kotlinx-coroutines-core" % "1.9.0",
-      "io.arrow-kt" % "arrow-core" % "2.0.0",
-      "io.arrow-kt" % "arrow-fx-coroutines" % "2.0.0"
+      "org.jetbrains.kotlinx" % "kotlinx-coroutines-core" % "1.10.2",
+      "io.arrow-kt" % "arrow-core" % "2.2.0",
+      "io.arrow-kt" % "arrow-fx-coroutines" % "2.2.0"
     ),
     Compile / unmanagedSourceDirectories := (Compile / kotlinSource).value :: Nil,
     Test / unmanagedSourceDirectories := (Test / kotlinSource).value :: Nil,
