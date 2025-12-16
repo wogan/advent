@@ -7,7 +7,7 @@ lazy val adventScala = (project in file("scala"))
   .settings(
     name := "advent-scala",
     scalaVersion := "3.7.4",
-    scalacOptions ++= Seq("-Xtarget:21", "-Xkind-projector", "-deprecation", "-feature"), // intellij wants the -Y version
+    scalacOptions ++= Seq("-Xtarget:21", "-Xkind-projector", "-deprecation", "-feature", "-language:implicitConversions"),
     idePackagePrefix := Some("dev.wogan.advent.scala"),
     libraryDependencies := Seq(
       "org.typelevel" %% "cats-core" % "2.13.0",
@@ -19,10 +19,11 @@ lazy val adventScala = (project in file("scala"))
       "co.fs2" %% "fs2-io" % "3.12.2",
       "org.scalameta" %% "munit" % "1.2.1" % Test,
       "org.typelevel" %% "munit-cats-effect" % "2.1.0" % Test,
-      
     ),
-    dependencyOverrides += "org.scala-lang" %% "scala3-library" % scalaVersion.value,
-      dependencyOverrides += "org.scala-lang" %% "scala3-compiler" % scalaVersion.value
+    dependencyOverrides ++= Seq(
+      "org.scala-lang" %% "scala3-library" % scalaVersion.value,
+      "org.scala-lang" %% "scala3-compiler" % scalaVersion.value,
+    )
   )
 
 lazy val adventKotlin = (project in file("kotlin"))

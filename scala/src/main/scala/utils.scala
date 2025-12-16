@@ -6,6 +6,8 @@ import cats.effect.IO
 import cats.syntax.all.*
 import fs2.Stream
 
+import scala.annotation.targetName
+
 extension [A](a: A)
   def repeatWhile(f: A => A, p: A => Boolean): List[A] =
     Stream.iterate(a)(f).takeWhile(p).compile.toList
@@ -25,6 +27,9 @@ extension (r: Range)
 extension [A](s: Seq[A])
   def pairCombinations: Iterator[(A, A)] =
     s.combinations(2).map(s => (s.head, s.last))
+    
+  def pairPermutations: Seq[(A, A)] =
+    s.flatMap(a => s.map(a -> _))
 
 extension (stream: Stream[IO, Int])
   def max: Stream[IO, Int] =
@@ -32,6 +37,16 @@ extension (stream: Stream[IO, Int])
 
   def sum: Stream[IO, Int] =
     stream.reduce(_ + _)
+
+extension (stream: Stream[IO, Long])
+  @targetName("maxLong")
+  def max: Stream[IO, Long] =
+    stream.reduce(Math.max)
+
+  @targetName("sumLong")
+  def sum: Stream[IO, Long] =
+    stream.reduce(_ + _)
+
 
 given streamIntToString: Conversion[Stream[IO, Int], Output] =
   _.map(_.toString)
@@ -56,3 +71,20 @@ extension [A: Order](heap: Heap[A])
       heap
     else
       heap.add(a).remove
+
+extension (i: Long)
+  def divisors: Seq[Long] =
+    val x = math.abs(i)
+    val limit = math.sqrt(x.toDouble).toLong
+
+    val small = for {
+      i <- 1L to limit
+      if x % i == 0L
+    } yield i
+
+    val large = small.flatMap { i =>
+      val j = x / i
+      if (j != i) Some(j) else None
+    }
+
+    (small ++ large).sorted

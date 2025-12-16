@@ -20,7 +20,7 @@ object Day05 extends Day(5) {
       }).toList.forall(!_) // ensure no true values
 
     def fix(pagesToPrint: PagesToPrint): PagesToPrint =
-      pagesToPrint.toList.sorted(ordering(pagesToPrint)).toNel.get
+      pagesToPrint.toList.sorted(using ordering(pagesToPrint)).toNel.get
 
     // takes the pages to print as a parameter to filter out rules we don't need to follow
     def ordering(p: PagesToPrint): Ordering[Int] =

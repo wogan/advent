@@ -28,3 +28,10 @@ extension [A](grid: Grid[A])
 
   def getAll(points: List[Point]): List[A] =
     points.flatMap(get)
+
+  def neighbours(point: Point): List[Point] =
+    (-1 to 1).pairPermutations
+      .filterNot((_, _) == (0, 0))
+      .map(a => point + a)
+      .filter((a, b) => a >= 0 && b >= 0 && a < grid.size && b < grid.head.size)
+      .toList
