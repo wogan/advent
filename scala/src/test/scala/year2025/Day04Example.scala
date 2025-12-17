@@ -15,4 +15,5 @@ class Day04Example extends DayExample {
       |@.@.@@@.@.
       |""".stripMargin)
     .part1(13)
+    .part2(43)
 }

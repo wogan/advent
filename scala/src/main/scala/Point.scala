@@ -21,7 +21,14 @@ type Grid[A] = List[List[A]]
 
 extension [A](grid: Grid[A])
   def points: List[Point] =
-    grid.head.indices.flatMap(x => grid.indices.map(y => (x, y))).toList
+    grid.head.indices.flatMap(y => grid.indices.map(x => (x, y))).toList
+    
+  def mapWithPoints[B](f: (A, Point) => B): Grid[B] =
+    grid.zipWithIndex.map {
+      case (list, y) => list.zipWithIndex.map {
+        case (value, x) => f(value, x -> y)
+      }
+    }
 
   def get(point: Point): Option[A] =
     grid.lift(point.y).flatMap(_.lift(point.x))
